@@ -5,4 +5,6 @@ import com.anny.study.spring.model.City;
 
 public interface CityDAO {
 	public List<City> queryForList(String sql);
+	
+	public int addCity(City city);
 }

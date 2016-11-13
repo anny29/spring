@@ -1,5 +1,6 @@
 package com.anny.study.spring.impl.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +49,21 @@ public class CityDaoImpl implements CityDAO {
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	@Override
+	public int addCity(final City city) {
+	/*	if(city != null && StringUtils.isNotBlank(city.getCityName()) &&  StringUtils.isNotBlank(city.getProvinceName())) {
+		}*/
+		String sql = "insert into city (city_name, province_name) values (?, ?)";
+		return jdbcTemplate.update(sql, new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, city.getCityName());
+				ps.setString(2, city.getProvinceName());
+			}
+		});
 	}
 	
 

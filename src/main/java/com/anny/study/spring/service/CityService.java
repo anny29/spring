@@ -51,7 +51,7 @@ public class CityService {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = InitSpring.init();
 		CityService service =  (CityService) context.getBean("cityService");
-		service.addCity(new City(null, "湖北"));
+		service.addCity(new City("襄阳", "湖北"));
 		service.printAllCitys();
 	}
 

@@ -7,4 +7,7 @@ public interface CityDAO {
 	public List<City> queryForList(String sql);
 	
 	public int addCity(City city);
+	
+	public int deleteCity(City city);
 }
+

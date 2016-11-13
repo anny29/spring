@@ -65,6 +65,18 @@ public class CityDaoImpl implements CityDAO {
 			}
 		});
 	}
-	
 
+	@Override
+	public int deleteCity(City city) {
+		String sql = "delete from city where city_name = ?";
+		return jdbcTemplate.update(sql, new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setString(1, city.getCityName());
+			}
+		});
+	}
+	
+	
 }

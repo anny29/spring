@@ -48,10 +48,25 @@ public class CityService {
 		transactionManager.commit(txStatus);
 	}
 	
+	public void deleteCity(City city) {
+		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+		definition.setTimeout(20);
+		TransactionStatus txStatus = transactionManager.getTransaction(definition);
+		try {
+			cityDao.deleteCity(city);
+		}  catch(RuntimeException re) {
+			log.error("新增失败!", re);
+			transactionManager.rollback(txStatus);
+			throw re;
+		}
+		transactionManager.commit(txStatus);
+	}
+	
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = InitSpring.init();
 		CityService service =  (CityService) context.getBean("cityService");
-		service.addCity(new City("襄阳", "湖北"));
+		//service.addCity(new City("襄阳", "湖北"));
+		service.deleteCity(new City("襄阳", "湖北"));
 		service.printAllCitys();
 	}
 

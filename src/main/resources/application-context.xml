@@ -49,4 +49,10 @@
         	 	<ref bean="dataSource"/>
         	</property>
         </bean>
+        
+         <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+       		<property name="transactionManager">
+        	 	<ref bean="transactionManager"/>
+        	</property>
+        </bean>
  </beans>

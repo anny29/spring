@@ -1,9 +1,12 @@
 package com.anny.study.spring.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,6 +28,8 @@ public class CityService {
 	private CityDAO cityDao;
 	@Resource(name="transactionManager")
 	private PlatformTransactionManager transactionManager;
+	@Resource(name="logService")
+	private LogService logService;
 	
 	public void printAllCitys() {
 		String sql = "select * from city";
@@ -45,6 +50,9 @@ public class CityService {
 			transactionManager.rollback(txStatus);
 			throw re;
 		}
+		logService.addLog(
+				new com.anny.study.spring.model.Log("城市" + city.getCityName() + "新增成功！", 
+						DateFormatUtils.format(new Date(), "yyyy-MM-dd")));
 		transactionManager.commit(txStatus);
 	}
 	
@@ -65,8 +73,8 @@ public class CityService {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = InitSpring.init();
 		CityService service =  (CityService) context.getBean("cityService");
-		//service.addCity(new City("襄阳", "湖北"));
-		service.deleteCity(new City("襄阳", "湖北"));
+		service.addCity(new City("十堰", "湖北"));
+		//service.deleteCity(new City("襄阳", "湖北"));
 		service.printAllCitys();
 	}
 

@@ -55,4 +55,27 @@
         	 	<ref bean="transactionManager"/>
         	</property>
         </bean>
+        
+        <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        	<property name="transactionManager" ref="transactionManager" />
+        	<property name="transactionAttributes">
+        		<props>
+        			<prop key="addLog">PROPAGATION_REQUIRES_NEW</prop>
+        			<prop key="deleteLog">PROPAGATION_REQUIRES_NEW</prop>
+        		</props>
+        	</property>
+        </bean>
+        
+        <bean id="logServiceTarget" class="com.anny.study.spring.service.LogService">
+        </bean>
+        
+        <bean id="logService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        	<property name="target" ref="logServiceTarget" />
+        	<property name="proxyInterfaces" value="com.anny.study.spring.inf.LogServiceInf" />
+        	<property name="interceptorNames">
+        		<list>
+        			<value>transactionInterceptor</value>
+        		</list>
+        	</property>
+        </bean>
  </beans>

@@ -15,6 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.anny.study.spring.inf.LogServiceInf;
 import com.anny.study.spring.inf.dao.CityDAO;
 import com.anny.study.spring.model.City;
 import com.anny.study.spring.utils.InitSpring;
@@ -29,7 +30,7 @@ public class CityService {
 	@Resource(name="transactionManager")
 	private PlatformTransactionManager transactionManager;
 	@Resource(name="logService")
-	private LogService logService;
+	private LogServiceInf logService;
 	
 	public void printAllCitys() {
 		String sql = "select * from city";
@@ -73,7 +74,7 @@ public class CityService {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = InitSpring.init();
 		CityService service =  (CityService) context.getBean("cityService");
-		service.addCity(new City("十堰", "湖北"));
+		service.addCity(new City("荆门", "湖北"));
 		//service.deleteCity(new City("襄阳", "湖北"));
 		service.printAllCitys();
 	}

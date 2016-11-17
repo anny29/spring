@@ -39,4 +39,19 @@ public class LogDAOImpl implements LogDAO {
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see com.anny.study.spring.inf.dao.LogDAO#deleteLog(com.anny.study.spring.model.Log)
+	 */
+	@Override
+	public int deleteLog(Log log) {
+		String sql = "delete from log where id = ?";
+		return jdbcTemplate.update(sql, new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, log.getId());
+			}
+		});
+	}
+
 }

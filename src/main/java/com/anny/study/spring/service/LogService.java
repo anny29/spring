@@ -12,6 +12,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.anny.study.spring.inf.LogServiceInf;
 import com.anny.study.spring.inf.dao.LogDAO;
 import com.anny.study.spring.model.Log;
 
@@ -20,8 +21,8 @@ import com.anny.study.spring.model.Log;
  * @author: Anny
  * @time: 2016年11月14日下午4:48:11
  */
-@Service("logService")
-public class LogService {
+//@Service("logService")
+public class LogService implements LogServiceInf {
 	
 	@Resource(name="transactionTemplate")
 	private TransactionTemplate transactionTemplate;
@@ -29,6 +30,7 @@ public class LogService {
 	@Resource(name="logDAO")
 	private LogDAO logDAO;
 	
+	@Override
 	public int addLog(Log log) {
 		//定义事务传播行为
 		transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -39,6 +41,14 @@ public class LogService {
 			}
 			
 		});
+	}
+
+	/* (non-Javadoc)
+	 * @see com.anny.study.spring.inf.LogServiceInf#deleteLog(com.anny.study.spring.model.Log)
+	 */
+	@Override
+	public int deleteLog(Log log) {
+		return logDAO.deleteLog(log);
 	}
 	
 }

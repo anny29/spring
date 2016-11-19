@@ -59,7 +59,7 @@ public class CityService {
 	
 	public void deleteCity(City city) {
 		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
-		definition.setTimeout(20);
+		//definition.setTimeout(20);
 		TransactionStatus txStatus = transactionManager.getTransaction(definition);
 		try {
 			cityDao.deleteCity(city);
@@ -74,7 +74,7 @@ public class CityService {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = InitSpring.init();
 		CityService service =  (CityService) context.getBean("cityService");
-		service.addCity(new City("荆门", "湖北"));
+		service.addCity(new City("襄阳", "湖北"));
 		//service.deleteCity(new City("襄阳", "湖北"));
 		service.printAllCitys();
 	}

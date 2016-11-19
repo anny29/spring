@@ -55,20 +55,23 @@
         	 	<ref bean="transactionManager"/>
         	</property>
         </bean>
-        
+       <!--  
+        事务管理拦截器
         <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
         	<property name="transactionManager" ref="transactionManager" />
         	<property name="transactionAttributes">
         		<props>
-        			<prop key="addLog">PROPAGATION_REQUIRES_NEW</prop>
+        			<prop key="addLog">PROPAGATION_REQUIRES_NEW,timeout_20</prop>
         			<prop key="deleteLog">PROPAGATION_REQUIRES_NEW</prop>
         		</props>
         	</property>
         </bean>
         
+        目标对象
         <bean id="logServiceTarget" class="com.anny.study.spring.service.LogService">
         </bean>
         
+        代理对象
         <bean id="logService" class="org.springframework.aop.framework.ProxyFactoryBean">
         	<property name="target" ref="logServiceTarget" />
         	<property name="proxyInterfaces" value="com.anny.study.spring.inf.LogServiceInf" />
@@ -78,4 +81,19 @@
         		</list>
         	</property>
         </bean>
+         -->
+         
+         
+       <!--  <tx:advice id="txAdvice" transaction-manager="transactionManager" >
+        	<tx:attributes>
+        		<tx:method name="*Log" propagation="REQUIRES_NEW" timeout="20"/>
+        	</tx:attributes>
+        </tx:advice>
+        
+        <aop:config>
+        	<aop:pointcut id="txServices" expression="execution(* com.anny.study.spring.service.LogService.*(..))"/>
+        	<aop:advisor pointcut-ref="txServices" advice-ref="txAdvice" />
+        </aop:config> -->
+        
+        <tx:annotation-driven transaction-manager="transactionManager" />
  </beans>

@@ -13,7 +13,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.anny.study.spring.inf.LogServiceInf;
 import com.anny.study.spring.inf.dao.CityDAO;
@@ -31,6 +34,9 @@ public class CityService {
 	private PlatformTransactionManager transactionManager;
 	@Resource(name="logService")
 	private LogServiceInf logService;
+	
+	@Resource(name="transactionTemplate")
+	private TransactionTemplate transactionTemplate;
 	
 	public void printAllCitys() {
 		String sql = "select * from city";
@@ -58,7 +64,7 @@ public class CityService {
 	}
 	
 	public void deleteCity(City city) {
-		DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+		/*DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
 		//definition.setTimeout(20);
 		TransactionStatus txStatus = transactionManager.getTransaction(definition);
 		try {
@@ -68,7 +74,18 @@ public class CityService {
 			transactionManager.rollback(txStatus);
 			throw re;
 		}
-		transactionManager.commit(txStatus);
+		transactionManager.commit(txStatus);*/
+		transactionTemplate.setTimeout(20);
+		transactionTemplate.setPropagationBehavior(Propagation.REQUIRED.value());
+		transactionTemplate.execute(new TransactionCallback<Integer>() {
+
+			@Override
+			public Integer doInTransaction(TransactionStatus status) {
+				return cityDao.deleteCity(city);
+			}
+			
+		});
+		
 	}
 	
 	public static void main(String[] args) {
